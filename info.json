@@ -1,0 +1,12 @@
+{
+  "name": "map-tag-gps",
+  "version": "0.1.0",
+  "title": "Map tag GPS",
+  "author": "Subject31415",
+  "factorio_version": "1.1",
+  "dependencies": [
+    "base >= 1.1",
+    "BetterAlertArrows"
+  ],
+  "description": "Create a tag named 'gps-destination' and an arrow will point in that direction until the destination has been reached or the tag is removed."
+}
