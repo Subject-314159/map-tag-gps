@@ -22,4 +22,10 @@ data:extend({{
     minimum_value = 2,
     maximum_value = 15,
     order = "a1"
+}, {
+    type = "string-setting",
+    name = "gps_tag-name",
+    setting_type = "runtime-global",
+    default_value = 'gps-destination',
+    order = "a1"
 }})

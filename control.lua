@@ -182,7 +182,7 @@ end)
 
 script.on_event(defines.events.on_chart_tag_added, function(e)
     -- Check if tag is GPS tag
-    if e.tag.text ~= "gps-destination" then
+    if e.tag.text ~= settings.global["gps_tag-name"].value then
         return
     end
 
