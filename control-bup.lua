@@ -1,15 +1,93 @@
-local arrow = require("__arrowlib__/arrow")
+------------------------------------------------------------------------------------------
+-- Helper functions
+------------------------------------------------------------------------------------------
+local get_pt = function(character, tag)
+    local pt = {
+        first = {
+            x = character.position.x,
+            y = character.position.y
+        },
+        second = {
+            x = tag.position.x,
+            y = tag.position.y
+        }
+    }
+    pt.delta = {
+        -- x = pt.second.x - pt.first.x,
+        -- y = pt.second.y - pt.first.y
+        x = pt.first.x - pt.second.x,
+        y = pt.second.y - pt.first.y
+    }
+    return pt
+end
+
+local get_distance = function(character, tag)
+    local pt = get_pt(character, tag)
+    local distance = math.sqrt(pt.delta.x ^ 2 + pt.delta.y ^ 2) - 0.5
+    return distance
+end
+
+local calculate = function(character, tag)
+
+    -- Get some variables to work with
+    local pt = get_pt(character, tag)
+
+    -- Prepare the return array
+    local prop = {}
+
+    -- Do the calculations
+    -- Angle calculations
+    prop.angle_rad = math.atan2(pt.delta.x, pt.delta.y) + (math.pi / 2)
+    prop.angle_deg = prop.angle_rad * (180 / math.pi)
+
+    -- Segmented angle
+    local deg_seg = 20
+    local angle_corr = prop.angle_deg - (deg_seg / 2)
+    prop.angle_deg_seg = math.floor((angle_corr) / deg_seg) * deg_seg
+
+    prop.distance = get_distance(character, tag)
+    prop.offset = math.min(prop.distance, settings.global["gps_arrow-offset"].value) -- Draw the arrow at max 20 meter
+    prop.offx = prop.offset * math.cos(prop.angle_rad)
+    prop.offy = prop.offset * math.sin(prop.angle_rad)
+
+    return prop
+
+end
+
+local get_angle_corrected = function(angle)
+    if not angle then
+        return 0
+    end
+    return ((angle + 90) / 360) or 0
+end
 
 local function global_init()
     global.players = {}
-    arrow.init({
-        raise_warnings = true
-    })
 end
 
 ------------------------------------------------------------------------------------------
--- Destination helpers
+-- Tracking arrow
 ------------------------------------------------------------------------------------------
+
+local function draw_new_arrow(player, data)
+    local prop = {
+        sprite = "utility/alert_arrow",
+        orientation = get_angle_corrected(data.angle_deg),
+        -- orientation_target = e,
+        target = player.character,
+        target_offset = {
+            x = data.offx,
+            y = data.offy
+        },
+        surface = player.surface,
+        -- time_to_live = 10 * 60,
+        x_scale = settings.global["gps_arrow-size"].value,
+        y_scale = settings.global["gps_arrow-size"].value
+    }
+
+    -- Draw & return the id
+    return rendering.draw_sprite(prop)
+end
 
 local function draw_new_destination(player, position)
     local prop = {
@@ -23,10 +101,25 @@ local function draw_new_destination(player, position)
     return rendering.draw_sprite(prop)
 end
 
+local function update_arrow(id, player, data)
+
+    -- Update orientation
+    rendering.set_orientation(id, get_angle_corrected(data.angle_deg))
+
+    local target = player.character
+    local target_offset = {
+        x = data.offx,
+        y = data.offy
+    }
+    -- Update offset
+    rendering.set_target(id, target, target_offset)
+
+end
+
 local function clear_destination(destination)
     -- Destroy the sprites
-    arrow.remove(destination.arrow_id)
-    rendering.destroy(destination.destination_id)
+    rendering.destroy(destination.arrow)
+    rendering.destroy(destination.destination)
 
     -- Remove the map tag
     destination.tag.destroy()
@@ -37,7 +130,6 @@ end
 ------------------------------------------------------------------------------------------
 
 script.on_event(defines.events.on_tick, function()
-    arrow.tick_update()
     -- Update arrows if any
     for i, p in pairs(global.players or {}) do
         -- Get the player & character
@@ -50,8 +142,13 @@ script.on_event(defines.events.on_tick, function()
             if not d.tag then
                 d = nil
             else
+                d.data = calculate(player, d.tag)
+
+                -- Update the arrow
+                update_arrow(d.arrow, player, d.data)
+
                 -- Remove tag & announce when less than 5m
-                if arrow.get_distance(d.arrow_id) < settings.global["gps_destination-distance"].value then
+                if d.data.distance < settings.global["gps_destination-distance"].value then
                     -- Set destination reached
                     d.destination_reached = true
 
@@ -127,21 +224,21 @@ script.on_event(defines.events.on_chart_tag_added, function(e)
         name = "signal-dot"
     }
 
+    -- Calculate arrow data
+    local data = calculate(player, e.tag)
+
     -- Create arrow
-    local data = {
-        source = player.character,
-        target = e.tag.position
-    }
-    local arrow_id = arrow.create(data)
+    local arrow = draw_new_arrow(player, data)
 
     -- Create destination sprite
-    local destination_id = draw_new_destination(player, e.tag.position)
+    local destination = draw_new_destination(player, e.tag.position)
 
     -- Store in global
     global.players[e.player_index].destinations[e.tag.tag_number] = {
         tag = e.tag,
-        destination_id = destination_id,
-        arrow_id = arrow_id,
+        destination = destination,
+        arrow = arrow,
+        data = data,
         destination_reached = false
     }
 
