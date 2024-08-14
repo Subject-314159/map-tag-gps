@@ -1,13 +1,12 @@
 {
   "name": "map-tag-gps",
-  "version": "0.1.2",
+  "version": "0.2.2",
   "title": "Map tag GPS",
   "author": "Subject31415",
   "factorio_version": "1.1",
   "dependencies": [
     "base >= 1.1",
-    "BetterAlertArrows",
     "arrowlib >= 0.1.1"
   ],
-  "description": "Create a tag named 'gps-destination' and an arrow will point in that direction until the destination has been reached or the tag is removed."
+  "description": "Use the GPS tool to set direction to any existing tag or a temporary tag named 'gps-destination' and an arrow will point in that direction until the destination has been reached."
 }

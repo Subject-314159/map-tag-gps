@@ -28,4 +28,10 @@ data:extend({{
     setting_type = "runtime-global",
     default_value = 'gps-destination',
     order = "a1"
+}, {
+    type = "string-setting",
+    name = "gps_arrow-sprite",
+    setting_type = "runtime-global",
+    default_value = "Navigation",
+    allowed_values = {"Navigation", "Vanilla", "Better"}
 }})
