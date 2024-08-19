@@ -1,4 +1,15 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.3.1
+Date: 2024-08-18
+  Bugfixes:
+    - Fixed teleporting to impossible location
+    - Fixes teleporting while in a vehicle
+---------------------------------------------------------------------------------------------------
+Version: 0.3.0
+Date: 2024-08-17
+  Features:
+    - Added teleportation by shift+click on tag button (needs global settings enabled first)
+---------------------------------------------------------------------------------------------------
 Version: 0.2.2
 Date: 2024-08-14
   Features:

@@ -112,7 +112,15 @@ script.on_event(defines.events.on_gui_click, function(e)
                 break
             end
         end
-        gps.set_destination(e.player_index, tag)
+
+        -- Process the action
+        if e.shift and settings.global["gps_enable-teleport"].value then
+            -- Shift click is teleport
+            gps.teleport_to(e.player_index, tag)
+        else
+            -- Regular click is set destination
+            gps.set_destination(e.player_index, tag)
+        end
     elseif e.element.name == "mt_remove-all-destinations" then
         gps.remove_all(e.player_index)
     end

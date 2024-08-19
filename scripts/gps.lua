@@ -91,9 +91,46 @@ gps.remove_all = function(player_index)
     end
 end
 
+gps.teleport_to = function(player_index, tag)
+    -- Check if we have a player
+    if not player_index or not game.get_player(player_index) then
+        return
+    end
+
+    -- Get some variables to work with
+    local player = game.get_player(player_index)
+    if not player then
+        return
+    end
+    if player.surface.index ~= tag.surface.index then
+        player.print("Unable to teleport to another surface")
+        return
+    end
+    local teleport_entity
+    if player.vehicle then
+        teleport_entity = player.vehicle
+    else
+        teleport_entity = player
+    end
+    if not teleport_entity then
+        player.print("There is nothing to teleport")
+        return
+    end
+
+    local pos = player.surface.find_non_colliding_position("character", tag.position, 10, 0.5)
+    if not pos then
+        player.print("Unable to find a safe location to teleport to")
+        return
+    end
+
+    teleport_entity.teleport(pos, tag.surface)
+    player.print("[GPS] Teleported to " .. get_tag_annotation(tag) .. " [gps=" .. (tag.position.x) .. "," ..
+                     (tag.position.y) .. "," .. player.surface.name .. "]")
+end
+
 gps.set_destination = function(player_index, tag)
     -- Check if we have a player
-    if not player_index then
+    if not player_index or not game.get_player(player_index) then
         return
     end
 
