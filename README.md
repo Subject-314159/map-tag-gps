@@ -1,14 +1,18 @@
 # Map tag GPS
 
-Do you also get frustrated that you have to travel long distances and continuously check the map where you are and where you need to go?
+Do you also get frustrated that you have to travel long distances and continuously check the map where you are and where you need to go? Then this mod is the solution for you!
 
-This mod is the solution for you! Set your destination in just a few clicks:
+# How to use
 
--   Grab the GPS tool from the quick bar or with `SHIFT + ALT + G`
+Set your destination in just a few clicks:
+
+-   Grab the Map Tag tool from the quick bar or with `SHIFT + ALT + G`
 -   Set your destination
     -   Click on the map to set a temporary tag `'gps-destination'` (configurable)
-    -   Or click on any tag in the pop-up that comes with the GPS tool
+    -   Or click on any tag in the pop-up that comes with the Map Tag tool
 -   An arrow will guide you to your destination
+
+#What it does
 
 In the GPS tool pop-up the active destinations are marked, clicking on one of the destinations cancels the navigation. At the same time there is a button available to cancel all active destinations at once.
 

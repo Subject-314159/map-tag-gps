@@ -34,9 +34,4 @@ data:extend({{
     setting_type = "runtime-global",
     default_value = "Navigation",
     allowed_values = {"Navigation", "Vanilla", "Better"}
-}, {
-    type = "bool-setting",
-    name = "gps_enable-teleport",
-    setting_type = "runtime-global",
-    default_value = false
 }})
