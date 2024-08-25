@@ -20,6 +20,14 @@ When removing a tag from the map which is an active destination the navigation f
 
 ---
 
+# Known issues
+
+-   Mod 'Map tag teleport' overrules navigation functionality
+
+# Roadmap
+
+-   Update compatibility with Map tag teleport
+
 # Collaborations welcome
 
 -   Start a discussion with your ideas
