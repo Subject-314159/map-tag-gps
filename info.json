@@ -1,12 +1,13 @@
 {
   "name": "map-tag-gps",
-  "version": "0.4.0",
+  "version": "0.4.2",
   "title": "Map tag GPS",
   "author": "Subject31415",
   "factorio_version": "1.1",
   "dependencies": [
     "base >= 1.1",
-    "map-tag-core"
+    "map-tag-core >= 0.1.3",
+    "~map-tag-teleport"
   ],
   "description": "Use the GPS tool to set direction to any existing tag or a temporary tag named 'gps-destination' and an arrow will point in that direction until the destination has been reached. Compatible with Map tag teleport."
 }

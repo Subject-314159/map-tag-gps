@@ -1,4 +1,16 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.4.2
+Date: 2024-09-26
+  Bugfixes:
+    - Prevent crash when only Map tag GPS or Map tag teleport is installed
+---------------------------------------------------------------------------------------------------
+Version: 0.4.1
+Date: 2024-08-30
+  Features:
+    - Added bookmark functionality
+  Bugfixes:
+    - Fixed compatibility between Map tag GPS and Map tag teleport
+---------------------------------------------------------------------------------------------------
 Version: 0.4.0
 Date: 2024-08-19
   Changes:
